@@ -16,28 +16,59 @@ const slides = [
 		"tagLine":"Autocollants <span>avec découpe laser sur mesure</span>"
 	}
 ]
+		let currentImageIndex = 0;
+        const bannerImg = document.querySelector('.banner-img');
+        const arrowLeft = document.querySelector('.arrow-left');
+        const arrowRight = document.querySelector('.arrow-right');
+		const dotsContainer = document.querySelector('.dots')
 
-const slide = ["./assets/images/slideshow/slide1.png", "./assets/images/slideshow/slide2.png", "assets/images/slideshow/slide3.png", "assets/images/slideshow/slide4.png"]
+        function changeImage(index) {
+            bannerImg.src = `./assets/images/slideshow/${slides[index].image}`;
+        }
+		function changeText(index){
+			textImg.innerHTML = slides[index].tagLine;
+		}
 
-let banner = document.getElementById("banner")
-let bannerImg = document.querySelector(".banner-img")
-let arrowLeft = document.querySelector(".arrow-left")
-let arrowRight = document.querySelector(".arrow-right")
-let i = 0
-arrowLeft.addEventListener ("click", () => {
-	i++
-	slide[i]
-	bannerImg.src = slide[i]
-	console.log("ça marche a gauche")
-	if (slide[i] === undefined){
-		bannerImg.src = slide[3]
-	}
-})
-arrowRight.addEventListener ("click", () => {
-	i++
-	slide[i]
-	bannerImg.src = slide[i]
-	if (slide[i] === undefined){
-		bannerImg.src = slide[0]
-	}
-})
+		function createDot(index) {
+			const dot = document.createElement('span');
+			dot.classList.add('dot');
+			dot.addEventListener('click', () => {
+				currentImageIndex = index;
+				changeImage(currentImageIndex);
+			})
+			dotsContainer.appendChild(dot);
+		}
+
+		slides.forEach((slides, index) => {
+			createDot(index);
+		})
+
+		
+		function updateDots(index) {
+			const dots = document.querySelectorAll('.dot');
+				if (i === index) {
+					dots[i].classList.add('dot_selected');
+				} else {
+					dots[i].classList.remove('dot_selected');
+				}
+			}
+
+
+		let textImg = document.querySelector('#banner p');
+
+        arrowLeft.addEventListener('click', () => {
+			console.log("la flèche de gauche fonctionne");
+            currentImageIndex = (currentImageIndex - 1 + slides.length) % slides.length;
+            changeImage(currentImageIndex);
+			changeText(currentImageIndex);
+        });
+
+        arrowRight.addEventListener('click', () => {
+			console.log("la flèche de droite fonctionne");
+            currentImageIndex = (currentImageIndex + 1) % slides.length;
+            changeImage(currentImageIndex);
+			changeText(currentImageIndex);
+        });
+
+	
+		
